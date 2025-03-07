@@ -378,6 +378,4 @@ module "eks_blueprints_addons" {
   }
 
   observability_tag = null
-
 }
-

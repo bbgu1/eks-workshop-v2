@@ -1,3 +1,10 @@
+---
+title: "Deploy workload to Hybrid Node"
+sidebar_position: 10
+sidebar_custom_props: { "module": false }
+weight: 25 # used by test framework
+---
+
 Deploy the sample application - deployment, service, and ingress objects.
 
 ```bash
