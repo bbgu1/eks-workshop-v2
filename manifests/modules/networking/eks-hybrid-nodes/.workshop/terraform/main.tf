@@ -366,7 +366,7 @@ resource "aws_vpc_security_group_ingress_rule" "node_from_remote_pod" {
   security_group_id = data.aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id
 }
 
-#module "eks_blueprints_addons" {
+module "eks_blueprints_addons" {
   source  = "aws-ia/eks-blueprints-addons/aws"
   version = "1.22.0"
 
