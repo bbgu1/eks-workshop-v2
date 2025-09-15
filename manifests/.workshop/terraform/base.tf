@@ -78,7 +78,7 @@ provider "kubernetes" {
 #}
 
 provider "helm" {
-  kubernetes = {
+  kubernetes {
     host                   = local.eks_cluster_endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)
     exec = {
