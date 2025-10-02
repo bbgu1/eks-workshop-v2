@@ -392,7 +392,7 @@ resource "aws_eks_addon" "amazon_cloudwatch_observability" {
   cluster_name = var.addon_context.eks_cluster_id
   addon_name   = "amazon-cloudwatch-observability"
   addon_version = "v4.5.0-eksbuild.1" 
-  resolve_conflicts = "OVERWRITE" 
+  resolve_conflicts_on_update = "PRESERVE"
   configuration_values = jsonencode({
     "containerInsights" = {
       "enabled" = true
