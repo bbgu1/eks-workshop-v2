@@ -45,7 +45,7 @@ data "http" "public_ip" {
 
 # Create VPC in remote region
 resource "aws_vpc" "remote" {
-
+  depends_on           = [module.eks_blueprints_addons]
   cidr_block           = var.remote_network_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -381,6 +381,10 @@ module "eks_blueprints_addons" {
     policy_name = "${var.addon_context.eks_cluster_id}-alb-controller"
   }
 
-  create_kubernetes_resources = false
+  enable_metric_server = true
+  enable_cloudwatch_metrics = true
+  enable_cert_manager  = true
+
+  create_kubernetes_resources = true
   observability_tag = null
 }
