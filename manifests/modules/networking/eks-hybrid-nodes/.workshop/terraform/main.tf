@@ -381,10 +381,52 @@ module "eks_blueprints_addons" {
     policy_name = "${var.addon_context.eks_cluster_id}-alb-controller"
   }
 
-  enable_metric_server = true
-  enable_cloudwatch_metrics = true
+  enable_metrics_server = true
   enable_cert_manager  = true
 
   create_kubernetes_resources = true
   observability_tag = null
+}
+
+resource "aws_eks_addon" "amazon_cloudwatch_observability" {
+  cluster_name = aws_eks_cluster.example.name
+  addon_name   = "amazon-cloudwatch-observability"
+  addon_version = "v1.0.0-eksbuild.1" # Specify the desired version
+  resolve_conflicts = "OVERWRITE" # Or "NONE", "PRESERVE"
+  # Optional: Configure settings specific to the CloudWatch Observability add-on
+  configuration_values = jsonencode({
+    "containerInsights" = {
+      "enabled" = true
+    },
+    "applicationSignals" = {
+      "enabled" = true # Set to true if you want to enable Application Signals
+    }
+  })
+
+  # Ensure the IAM role for the add-on is created and attached if needed.
+  # This example assumes an IAM role named "AmazonCloudWatchObservabilityRole" exists
+  # or is created elsewhere in your Terraform configuration.
+  service_account_role_arn = aws_iam_role.cloudwatch_observability_role.arn
+}
+
+resource "aws_iam_role" "cloudwatch_observability_role" {
+  name = "AmazonCloudWatchObservabilityRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "eks.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_observability_policy_attachment" {
+  role       = aws_iam_role.cloudwatch_observability_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy" # Or a custom policy
 }
