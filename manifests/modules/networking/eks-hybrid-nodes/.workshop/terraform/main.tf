@@ -389,11 +389,10 @@ module "eks_blueprints_addons" {
 }
 
 resource "aws_eks_addon" "amazon_cloudwatch_observability" {
-  cluster_name = aws_eks_cluster.example.name
+  cluster_name = var.addon_context.eks_cluster_id
   addon_name   = "amazon-cloudwatch-observability"
-  addon_version = "v1.0.0-eksbuild.1" # Specify the desired version
-  resolve_conflicts = "OVERWRITE" # Or "NONE", "PRESERVE"
-  # Optional: Configure settings specific to the CloudWatch Observability add-on
+  addon_version = "v4.5.0-eksbuild.1" 
+  resolve_conflicts = "OVERWRITE" 
   configuration_values = jsonencode({
     "containerInsights" = {
       "enabled" = true
@@ -403,9 +402,6 @@ resource "aws_eks_addon" "amazon_cloudwatch_observability" {
     }
   })
 
-  # Ensure the IAM role for the add-on is created and attached if needed.
-  # This example assumes an IAM role named "AmazonCloudWatchObservabilityRole" exists
-  # or is created elsewhere in your Terraform configuration.
   service_account_role_arn = aws_iam_role.cloudwatch_observability_role.arn
 }
 
