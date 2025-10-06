@@ -405,12 +405,12 @@ resource "aws_iam_role" "cloudwatch_observability_role" {
         Action = "sts:AssumeRoleWithWebIdentity"
         Effect = "Allow"
         Principal = {
-          Federated = module.eks.oidc_provider_arn
+          Federated = var.addon_context.eks_oidc_provider_arn
         }
         Condition = {
           StringEquals = {
-            "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:sub" : "system:serviceaccount:amazon-cloudwatch:cloudwatch-agent",
-            "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:aud" : "sts.amazonaws.com"
+            "${replace(var.addon_context.eks_oidc_issuer_url, "https://", "")}:sub" : "system:serviceaccount:amazon-cloudwatch:cloudwatch-agent",
+            "${replace(var.addon_context.eks_oidc_issuer_url, "https://", "")}:aud" : "sts.amazonaws.com"
           }
         }
       }
