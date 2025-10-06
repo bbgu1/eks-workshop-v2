@@ -381,7 +381,6 @@ module "eks_blueprints_addons" {
     policy_name = "${var.addon_context.eks_cluster_id}-alb-controller"
   }
 
-  enable_metrics_server = true
   enable_cert_manager  = true
 
   create_kubernetes_resources = true
