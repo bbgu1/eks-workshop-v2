@@ -393,15 +393,6 @@ resource "aws_eks_addon" "amazon_cloudwatch_observability" {
   addon_name   = "amazon-cloudwatch-observability"
   addon_version = "v4.5.0-eksbuild.1" 
   resolve_conflicts_on_update = "PRESERVE"
-  configuration_values = jsonencode({
-    "containerInsights" = {
-      "enabled" = true
-    },
-    "applicationSignals" = {
-      "enabled" = true # Set to true if you want to enable Application Signals
-    }
-  })
-
   service_account_role_arn = aws_iam_role.cloudwatch_observability_role.arn
 }
 
